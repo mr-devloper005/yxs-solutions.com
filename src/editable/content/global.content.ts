@@ -3,17 +3,18 @@ import { slot4BrandConfig } from '@/editable/theme/brand.config'
 export const globalContent = {
   site: {
     name: slot4BrandConfig.siteName,
-    tagline: slot4BrandConfig.tagline || 'Independent reading platform',
+    tagline: slot4BrandConfig.tagline || 'Fresh internet finds and visual stories',
     domain: slot4BrandConfig.domain,
     baseUrl: slot4BrandConfig.baseUrl,
   },
   nav: {
-    tagline: 'Independent reading platform',
+    tagline: 'Fresh internet finds and visual stories',
     primaryLinks: [
-      { label: 'Articles', href: '/articles' },
-      { label: 'Visuals', href: '/image-sharing' },
-      { label: 'Listings', href: '/listings' },
-      { label: 'Contact', href: '/contact' },
+      { label: 'Funny Galleries', href: '/article' },
+      { label: 'Funny Videos', href: '/image' },
+      { label: 'Games', href: '/listing' },
+      { label: 'Time Wasters', href: '/classified' },
+      { label: 'Internet Classics', href: '/sbm' },
     ],
     actions: {
       primary: { label: 'Start exploring', href: '/' },
@@ -21,27 +22,28 @@ export const globalContent = {
     },
   },
   footer: {
-    tagline: 'Stories, resources, and discoverable posts',
-    description: 'A connected publishing surface for articles, visuals, listings, profiles, bookmarks, and downloadable resources.',
+    tagline: 'Fresh picks, visual posts, and scrollable rabbit holes',
+    description: 'Browse standout posts, image-led stories, curious lists, and useful links in one playful editorial portal.',
     columns: [
       {
-        title: 'Explore',
+        title: 'Browse',
         links: [
-          { label: 'Articles', href: '/articles' },
-          { label: 'Listings', href: '/listings' },
-          { label: 'Images', href: '/image-sharing' },
-          { label: 'PDF Library', href: '/pdf' },
+          { label: 'Funny Galleries', href: '/article' },
+          { label: 'Funny Videos', href: '/image' },
+          { label: 'Games', href: '/listing' },
+          { label: 'Time Wasters', href: '/classified' },
         ],
       },
       {
-        title: 'Site',
+        title: 'More',
         links: [
+          { label: 'Internet Classics', href: '/sbm' },
           { label: 'About', href: '/about' },
           { label: 'Contact', href: '/contact' },
         ],
       },
     ],
-    bottomNote: 'Built for clean discovery and connected publishing.',
+    bottomNote: 'Built for playful browsing and easy discovery.',
   },
   commonLabels: {
     readMore: 'Read more',
