@@ -8,7 +8,7 @@ import type { SiteFeedPagination, SitePost } from '@/lib/site-connector'
 import { taskPageMetadata } from '@/config/site.content'
 import { taskPageVoices } from '@/editable/content/task-pages.content'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
-import { getTaskTheme, taskThemeStyle } from '@/editable/theme/task-themes'
+import { taskThemeStyle } from '@/editable/theme/task-themes'
 
 export const revalidate = 3
 
@@ -23,9 +23,6 @@ const getContent = (post: SitePost) => post.content && typeof post.content === '
 const asText = (value: unknown) => typeof value === 'string' ? value.trim() : ''
 const isUrl = (value: string) => value.startsWith('/') || /^https?:\/\//i.test(value)
 const stripHtml = (value: string) => value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
-
-const dedupeUrls = (urls: Array<string | null | undefined>): string[] =>
-  Array.from(new Set(urls.map((url) => (typeof url === 'string' ? url.trim() : '')).filter((url) => url.length > 0)))
 
 const getImages = (post: SitePost) => {
   const content = getContent(post)
@@ -80,7 +77,6 @@ export async function EditableTaskArchiveRoute({
 export function TaskArchiveView({ task, posts, pagination, category, basePath }: { task: TaskKey; posts: SitePost[]; pagination: SiteFeedPagination; category: string; basePath: string }) {
   const taskConfig = getTaskConfig(task)
   const voice = taskPageVoices[task]
-  const theme = getTaskTheme(task)
   const page = pagination.page || 1
   const label = taskConfig?.label || task
 

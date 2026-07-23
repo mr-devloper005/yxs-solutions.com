@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowRight, ExternalLink, FileText, Globe2, Mail, MapPin, Phone, UserRound } from 'lucide-react'
+import { ArrowLeft, ExternalLink, FileText, Globe2, Mail, MapPin, Phone, UserRound } from 'lucide-react'
 import { buildPostMetadata, buildTaskMetadata } from '@/lib/seo'
 import { fetchArticleComments, fetchTaskPostBySlug, fetchTaskPosts } from '@/lib/task-data'
 import { getTaskConfig, SITE_CONFIG, type TaskKey } from '@/lib/site-config'
@@ -86,6 +86,15 @@ const formatPlainText = (raw: string) => {
 const summaryText = (post: SitePost) => stripHtml(post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || '')
 const categoryOf = (post: SitePost, fallback: string) => asText(getContent(post).category) || post.tags?.[0] || fallback
 
+const normalizeText = (value: string) => value.toLowerCase().replace(/\s+/g, ' ').trim()
+const summaryDuplicatesBody = (post: SitePost) => {
+  const summary = normalizeText(summaryText(post))
+  if (!summary) return true
+  const body = normalizeText(stripHtml(getBody(post)))
+  if (!body) return false
+  return body.includes(summary) || summary.includes(body)
+}
+
 export function TaskDetailView({ task, post, related, comments = [] }: { task: TaskKey; post: SitePost; related: SitePost[]; comments?: Array<{ id: string; name: string; comment: string; createdAt: string }> }) {
   return (
     <EditableSiteShell>
@@ -98,7 +107,7 @@ export function TaskDetailView({ task, post, related, comments = [] }: { task: T
               <h1 className="editable-display mt-3 text-[2.9rem] font-black uppercase leading-[0.92] tracking-[-0.05em] text-[var(--tk-accent)] sm:text-[3.8rem]">
                 {post.title}
               </h1>
-              {summaryText(post) ? <p className="mt-4 max-w-3xl text-[1.05rem] leading-7 text-[var(--tk-text)]">{summaryText(post)}</p> : null}
+              {summaryText(post) && !summaryDuplicatesBody(post) ? <p className="mt-4 max-w-3xl text-[1.05rem] leading-7 text-[var(--tk-text)]">{summaryText(post)}</p> : null}
               <div className="mt-5 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--tk-muted)]">
                 <span>{SITE_CONFIG.name}</span>
                 {getField(post, ['location', 'address', 'city']) ? <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-[var(--tk-accent)]" /> {getField(post, ['location', 'address', 'city'])}</span> : null}
@@ -111,7 +120,7 @@ export function TaskDetailView({ task, post, related, comments = [] }: { task: T
 
             <aside className="space-y-6">
               <InfoPanel task={task} post={post} />
-              <GalleryPanel post={post} />
+              {task === 'image' ? null : <GalleryPanel post={post} />}
               <RelatedPanel task={task} related={related} />
             </aside>
           </div>
